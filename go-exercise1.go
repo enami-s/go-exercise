@@ -3,20 +3,28 @@ package main
 import "fmt"
 
 func main() {
-	var s string = "Hello Golang"
+	var num int = 100
+	fmt.Printf("Intは整数を扱う際に使用する。%d", num)
 
-	si := "100"
+	var s string = "Hello World"
+	fmt.Printf("stringは文字列を扱う場合に使用する。 %s\n", s)
 
-	fmt.Println(s)
-	fmt.Println(si)
+	var f float64 = 3.14
+	fmt.Printf("floatは小数を扱う際に使用する。%f\n", f)
 
-	fmt.Printf("%T\n", s)
+	var u uint = 24
+	fmt.Printf("Unitは正の数を扱う際に使用する。%d\n", u)
 
-	fmt.Println(`Hello
-		World`)
+	var c complex128 = 1 + 2i
+	fmt.Printf("complexは複素数を扱う場合に使用する。 %v\n", c)
 
-	fmt.Println("\"")
-	fmt.Println(`"`)
+	var b bool = true
+	fmt.Printf("boolは真偽値を扱う場合に使用する。 %t\n", b)
 
-	//fmt.Println(s[0])
+	var by byte = 65
+	fmt.Printf("byteは8ビット整数を扱う場合に使用する。 %d\n", by)
+
+	var any interface{}
+	any = "Go is Good!"
+	fmt.Printf("interfaceは任意の型を扱う場合に使用する。 %v\n", any)
 }
