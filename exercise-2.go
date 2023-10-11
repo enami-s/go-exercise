@@ -1,21 +1,36 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"sync"
+)
+
+const (
+	zerotenmax = 11
+	zerofifmax = 51
+)
+
+var wg sync.WaitGroup
 
 func zeroten() {
-	for i := 0; i < 11; i++ {
-		fmt.Println(i)
+	defer wg.Done()
+	for i := 0; i < zerotenmax; i++ {
+		fmt.Println("zeroten: ", i)
 	}
 }
 
 func zerofifty() {
-	for i := 0; i < 51; i++ {
-		fmt.Println(i)
+	defer wg.Done()
+	for i := 0; i < zerofifmax; i++ {
+		fmt.Println("zerofif: ", i)
 	}
 }
 
 func main() {
+	wg.Add(2)
 	go zeroten()
-	zerofifty()
+	go zerofifty()
+
+	wg.Wait()
 	fmt.Println("finish")
 }
