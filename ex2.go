@@ -30,7 +30,6 @@ func main() {
 	wg.Add(2)
 	go zeroten()
 	go zerofifty()
-	fmt.Println("hoge")
 
 	wg.Wait()
 	fmt.Println("finish")
