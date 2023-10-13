@@ -1,18 +1,14 @@
 package main
 
 import (
+	"apiapp/product"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 )
 
-type Product struct {
-	ID    int    `json:"id"`
-	Title string `json:"title"`
-}
-
-func GetProductDetail() (*Product, error) {
+func GetProductDetail() (*product.Product, error) {
 	resp, err := http.Get("https://dummyjson.com/products/1")
 	if err != nil {
 		return nil, err
@@ -24,7 +20,7 @@ func GetProductDetail() (*Product, error) {
 		return nil, err
 	}
 
-	var product Product
+	var product product.Product
 	err = json.Unmarshal(body, &product)
 	if err != nil {
 		return nil, err

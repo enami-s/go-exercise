@@ -27,4 +27,8 @@ func main() {
 	var any interface{}
 	any = "Go is Good!"
 	fmt.Printf("interfaceは任意の型を扱う場合に使用する。 %v\n", any)
+
+	var arr [3]int = [3]int{1, 2, 3}
+	fmt.Printf("配列は同じ型の値を複数扱う場合に使用する。 %v\n", arr)
+
 }
