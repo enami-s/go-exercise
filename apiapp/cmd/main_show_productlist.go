@@ -42,10 +42,7 @@ func main() {
 
 	repo := repository.NewProductRepository()
 
-	//Limitの定義、デフォルトは20
-	limit := 20
-
-	products, err := repo.GetProducts(limit)
+	products, err := repo.GetProducts()
 	showProducts(products, err)
 
 	execute(repo)

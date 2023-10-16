@@ -15,14 +15,7 @@ func TestGetProductsDetail(t *testing.T) {
 	if Debug {
 		t.Skip("スキップする")
 	}
-	// This will capture the printed output.
-	//printedOutput := ""
-	//print = func(a ...interface{}) (n int, err error) {
-	//	printedOutput += a[0].(string)
-	//	return len(printedOutput), nil
-	//}
 
-	//これから出力される内容をPrintedOutに格納
 	printedOutput := ""
 	capturePrint = func(a ...interface{}) (n int, err error) {
 		printedOutput += fmt.Sprint(a...)
