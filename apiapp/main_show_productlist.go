@@ -7,6 +7,8 @@ import (
 	"fmt"
 )
 
+var capturePrint func(a ...interface{}) (n int, err error) = fmt.Print
+
 func execute(repo repository.ProductRepository) {
 	// 商品IDを指定
 	productId := 1
@@ -17,7 +19,9 @@ func execute(repo repository.ProductRepository) {
 		return
 	}
 
-	fmt.Printf("商品詳細\nID: %d, Title: %s\n", product.ID, product.Title)
+	capturePrint("商品詳細\nID: ", product.ID, ", Title: ", product.Title, "\n")
+
+	//fmt.Println("商品詳細\nID: %d, Title: %s\n", product.ID, product.Title)
 }
 
 // 商品の一覧を表示する関数
