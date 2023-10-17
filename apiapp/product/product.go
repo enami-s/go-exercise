@@ -5,6 +5,6 @@ type Product struct {
 	Title string `json:"title"`
 }
 
-type ProductsResponse struct {
+type ProductListResponse struct {
 	Products []*Product `json:"products"`
 }

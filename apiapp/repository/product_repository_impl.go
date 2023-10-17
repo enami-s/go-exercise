@@ -8,9 +8,6 @@ import (
 	"net/http"
 )
 
-// publicでlimitの20を定義することで、外部から参照できるようになる
-const Limit = 20
-
 type ProductRepositoryImpl struct{}
 
 func NewProductRepository() ProductRepository {
@@ -19,8 +16,8 @@ func NewProductRepository() ProductRepository {
 
 // "https://dummyjson.com/productsのBodyのプロダクト情報を全て取得する関数
 func (repo *ProductRepositoryImpl) GetProducts() ([]*product.Product, error) {
-	//limitを20に設定
-	url := fmt.Sprintf("https://dummyjson.com/products?limit=%d", Limit)
+
+	url := fmt.Sprintf("https://dummyjson.com/products")
 
 	resp, err := http.Get(url)
 	if err != nil {
@@ -34,7 +31,7 @@ func (repo *ProductRepositoryImpl) GetProducts() ([]*product.Product, error) {
 		return nil, err
 	}
 
-	var response product.ProductsResponse
+	var response product.ProductListResponse
 	err = json.Unmarshal(body, &response)
 	if err != nil {
 		return nil, err
