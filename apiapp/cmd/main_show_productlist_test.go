@@ -33,4 +33,7 @@ func TestGetProductsDetail(t *testing.T) {
 		t.Errorf("正しい結果が出力されませんでした: %s", printedOutput)
 	}
 
+	//テストがパスした際にロダクト詳細取得に引数を指定しない場合は1の結果が取得できることを出力
+	t.Log("プロダクト詳細取得に引数を指定しない場合は1の結果が取得できる")
+
 }
