@@ -8,6 +8,9 @@ import (
 	"net/http"
 )
 
+// https://dummyjson.com/productsを定数で定義
+const productUrl = "https://dummyjson.com/products"
+
 type ProductRepositoryImpl struct{}
 
 func NewProductRepository() ProductRepository {
@@ -17,7 +20,8 @@ func NewProductRepository() ProductRepository {
 // "https://dummyjson.com/productsのBodyのプロダクト情報を全て取得する関数
 func (repo *ProductRepositoryImpl) GetProducts() ([]*product.Product, error) {
 
-	url := fmt.Sprintf("https://dummyjson.com/products")
+	//定数のをLimitの分だけ取得するように変更
+	url := fmt.Sprintf("%s?limit=%d", productUrl, product.Limit)
 
 	resp, err := http.Get(url)
 	if err != nil {
@@ -40,7 +44,7 @@ func (repo *ProductRepositoryImpl) GetProducts() ([]*product.Product, error) {
 }
 
 func (repo *ProductRepositoryImpl) GetProductDetail(productId int) (*product.Product, error) {
-	url := fmt.Sprintf("https://dummyjson.com/products/%d", productId)
+	url := fmt.Sprintf("%s/%d", productUrl, productId)
 	resp, err := http.Get(url)
 	if err != nil {
 		return nil, err
