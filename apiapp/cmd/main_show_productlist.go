@@ -20,8 +20,6 @@ func execute(repo repository.ProductRepository) {
 	}
 
 	capturePrint("商品詳細\nID: ", product.ID, ", Title: ", product.Title, "\n")
-
-	//fmt.Println("商品詳細\nID: %d, Title: %s\n", product.ID, product.Title)
 }
 
 // 商品の一覧を表示する関数
