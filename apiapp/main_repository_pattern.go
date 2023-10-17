@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-func Execute(repo repository.ProductRepository, productId int) {
+func execute(repo repository.ProductRepository, productId int) {
 	product, err := repo.GetProductDetail(productId)
 	if err != nil {
 		fmt.Println("Error:", err)
@@ -18,5 +18,5 @@ func Execute(repo repository.ProductRepository, productId int) {
 
 func main() {
 	repo := repository.NewProductRepository()
-	Execute(repo, 1)
+	execute(repo, 1)
 }
