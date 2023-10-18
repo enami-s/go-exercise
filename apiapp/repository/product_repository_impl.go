@@ -66,6 +66,6 @@ func (repo *ProductRepositoryImpl) GetProductDetail(productId int) (*product.Pro
 }
 
 // Marshalを使ってstructからjsonに変換するメソッドを実装
-func (repo *ProductRepositoryImpl) Marshal(product *product.Product) ([]byte, error) {
+func (repo *ProductRepositoryImpl) EncodeProduct(product *product.Product) ([]byte, error) {
 	return json.Marshal(product)
 }

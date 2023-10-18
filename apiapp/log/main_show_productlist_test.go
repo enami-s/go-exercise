@@ -3,6 +3,7 @@ package main
 
 //GetProductDetailをインポート
 import (
+	main2 "apiapp/cmd"
 	"apiapp/repository"
 	"fmt"
 	"testing"
@@ -17,7 +18,7 @@ func TestGetProductsDetail(t *testing.T) {
 	}
 
 	printedOutput := ""
-	capturePrint = func(a ...interface{}) (n int, err error) {
+	main2.capturePrint = func(a ...interface{}) (n int, err error) {
 		printedOutput += fmt.Sprint(a...)
 		return len(printedOutput), nil
 	}
@@ -26,7 +27,7 @@ func TestGetProductsDetail(t *testing.T) {
 	repo := repository.NewProductRepository()
 
 	//executeを実行
-	execute(repo)
+	main2.execute(repo)
 
 	//出力された内容が正しいか確認
 	if printedOutput != "商品詳細\nID: 1, Title: iPhone 9\n" {
