@@ -16,7 +16,7 @@ func Testプロダクト詳細取得メソッドに1のプロダクトIDを付�
 		t.Fatal(err)
 	}
 
-	//結果が2であることを確認
+	//結果が1であることを確認
 	if product.ID != 1 {
 		t.Fatal("expected 1 but got", product.ID)
 	}

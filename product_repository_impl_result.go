@@ -1,20 +1,29 @@
-package repository
+package main
 
 import (
 	"apiapp/product"
+	"apiapp/repository"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 )
 
+// Genericsを使用したResulttypeの構造体を定義
+type Result[T any] struct {
+	Products *T
+	Error    error
+}
+
+// APIによるデータの取得が失敗したらエラーの結果を作成する
+func NewErrorResult[T any](err error) *Result[T] {
+	return &Result[T]{Error: err}
+}
+
 // Chanを使用して、APIから取得したデータをchannelに送信する関数
-func GetProductsAsync() <-chan []*product.Product {
+func GetProductsAsync() <-chan Result[*product.Product] {
 	//channelを定義
 	ch := make(chan []*product.Product)
-
-	//chanelのcloseをdeferで定義
-	defer close(ch)
 
 	//定数のをLimitの分だけ取得するように変更
 	url := fmt.Sprintf("%s?limit=%d", productUrl, product.Limit)
@@ -22,7 +31,7 @@ func GetProductsAsync() <-chan []*product.Product {
 	go func() {
 		resp, err := http.Get(url)
 		if err != nil {
-			ch <- nil
+			ch <- NewErrorResult(err)
 			return
 		}
 		defer resp.Body.Close()
@@ -51,7 +60,7 @@ const productUrl = "https://dummyjson.com/products"
 
 type ProductRepositoryImpl struct{}
 
-func NewProductRepository() ProductRepository {
+func NewProductRepository() repository.ProductRepository {
 	return &ProductRepositoryImpl{}
 }
 
