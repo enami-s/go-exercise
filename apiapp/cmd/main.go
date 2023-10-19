@@ -12,13 +12,8 @@ func execute(repo repository.ProductRepository) {
 	productId := 1
 
 	product, err := repo.GetProductDetail(productId)
-	if err != nil {
-		fmt.Println("Error:", err)
-		return
-	}
 
-	fmt.Println("## 商品詳細\nID: ", product.ID, ", Title: ", product.Title, "\n\n")
-
+	fmt.Println("## 商品詳細\nID: ", product.ID, ", Title: ", product.Title, "\n")
 	fmt.Println("## encode")
 	encoded, err := repo.EncodeProduct(product)
 
