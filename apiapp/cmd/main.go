@@ -9,7 +9,7 @@ import (
 
 func execute(repo repository.ProductRepository) {
 	// 商品IDを指定
-	productId := 1
+	productId := 2
 
 	product, err := repo.GetProductDetail(productId)
 
