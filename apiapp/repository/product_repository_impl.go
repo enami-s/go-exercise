@@ -12,28 +12,36 @@ import (
 func GetfileProduct(productId int) (*product.Product, error) {
 	//channelを定義
 	ch := make(chan *product.Product)
+	errCh := make(chan error)
 	defer close(ch)
 
-	//フィル名を変数で定義
-	var fileName = fmt.Sprintf("%d.json", productId)
-	//ローカルのprivate/tmpディレクトリにfilenameと同じファイルが存在するか確認
-	body, err := ioutil.ReadFile("/private/tmp/" + fileName)
-
-	//ファイルが存在すれば、bodyをproduct.Productに変換してチャネルに格納
-	if err == nil {
+	//読み込んで変換している処理をgo funcにして非同期処理にする
+	go func() {
+		//フィル名を変数で定義
+		var fileName = fmt.Sprintf("%d.json", productId)
+		//ローカルのprivate/tmpディレクトリにfilenameと同じファイルが存在するか確認
+		body, err := ioutil.ReadFile("/private/tmp/" + fileName)
+		//ファイルが存在しなければ、エラーを返す
+		if err != nil {
+			errCh <- err
+			return
+		}
 		var product *product.Product
 		err = json.Unmarshal(body, &product)
 		if err != nil {
-			return nil, err
+			errCh <- err
+			return
 		}
 		//チャネルに格納
 		ch <- product
-		//チャネルから値を取り出す
-		return <-ch, nil
-	}
+	}()
 
-	//ファイルが存在しなければ、エラーを返す
-	return nil, err
+	select {
+	case product := <-ch:
+		return product, nil
+	case err := <-errCh:
+		return nil, err
+	}
 }
 
 // "https://dummyjson.com/productsのBodyのプロダクト情報を全て取得する関数
