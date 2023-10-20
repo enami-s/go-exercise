@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"apiapp/model"
 	"apiapp/product"
 	"encoding/json"
 	"fmt"
@@ -8,10 +9,23 @@ import (
 	"net/http"
 )
 
+// 戻り地がResult型で商品一覧をURLから取得するResultProducts関数の定義
+func (repo *ProductRepositoryImpl) FetchProductDetailByResult(productId int) *model.Result[model.Product] {
+	//GetProductDetail関数を呼び出す
+	product, err := repo.GetProductDetail(productId)
+
+	//エラーが発生した場合はエラーを出力
+	if err != nil {
+		return model.NewErrorResult[model.Product](err)
+	}
+	//成功した場合は成功の結果を出力
+	return model.NewSuccessResult[model.Product](product)
+}
+
 // /private/tmp/のproductId.jsonを取得する関数
-func GetfileProduct(productId int) (*product.Product, error) {
+func GetfileProduct(productId int) (*model.Product, error) {
 	//channelを定義
-	ch := make(chan *product.Product)
+	ch := make(chan *model.Product)
 	errCh := make(chan error)
 
 	//読み込んで変換している処理をgo funcにして非同期処理にする
@@ -27,7 +41,7 @@ func GetfileProduct(productId int) (*product.Product, error) {
 			errCh <- err
 			return
 		}
-		var product *product.Product
+		var product *model.Product
 		err = json.Unmarshal(body, &product)
 		if err != nil {
 			errCh <- err
@@ -46,7 +60,7 @@ func GetfileProduct(productId int) (*product.Product, error) {
 }
 
 // "https://dummyjson.com/productsのBodyのプロダクト情報を全て取得する関数
-func (repo *ProductRepositoryImpl) GetProducts() ([]*product.Product, error) {
+func (repo *ProductRepositoryImpl) GetProducts() ([]*model.Product, error) {
 
 	//定数のをLimitの分だけ取得するように変更
 	url := fmt.Sprintf("%s?limit=%d", productUrl, product.Limit)
@@ -63,7 +77,7 @@ func (repo *ProductRepositoryImpl) GetProducts() ([]*product.Product, error) {
 		return nil, err
 	}
 
-	var response product.ProductListResponse
+	var response model.ProductListResponse
 	err = json.Unmarshal(body, &response)
 	if err != nil {
 		return nil, err
@@ -80,8 +94,8 @@ func NewProductRepository() ProductRepository {
 	return &ProductRepositoryImpl{}
 }
 
-func (repo *ProductRepositoryImpl) GetProductDetail(productId int) (*product.Product, error) {
-	var product *product.Product
+func (repo *ProductRepositoryImpl) GetProductDetail(productId int) (*model.Product, error) {
+	var product *model.Product
 	//A(productId)の内容があれば、A(productId)を返す
 	product, err := GetfileProduct(productId)
 	if err == nil {
@@ -109,6 +123,6 @@ func (repo *ProductRepositoryImpl) GetProductDetail(productId int) (*product.Pro
 }
 
 // Marshalを使ってstructからjsonに変換するメソッドを実装
-func (repo *ProductRepositoryImpl) EncodeProduct(product *product.Product) ([]byte, error) {
+func (repo *ProductRepositoryImpl) EncodeProduct(product *model.Product) ([]byte, error) {
 	return json.Marshal(product)
 }
