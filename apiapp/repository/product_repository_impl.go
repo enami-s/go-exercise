@@ -13,10 +13,10 @@ func GetfileProduct(productId int) (*product.Product, error) {
 	//channelを定義
 	ch := make(chan *product.Product)
 	errCh := make(chan error)
-	defer close(ch)
 
 	//読み込んで変換している処理をgo funcにして非同期処理にする
 	go func() {
+		defer close(ch)
 		//フィル名を変数で定義
 		var fileName = fmt.Sprintf("%d.json", productId)
 		//ローカルのprivate/tmpディレクトリにfilenameと同じファイルが存在するか確認
