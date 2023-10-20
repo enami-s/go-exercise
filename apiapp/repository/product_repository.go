@@ -1,10 +1,13 @@
 package repository
 
-import "apiapp/product"
+import (
+	"apiapp/model"
+)
 
 type ProductRepository interface {
 	//引数にLimitも指定できるようにGetProductを変更
-	GetProducts() ([]*product.Product, error)
-	GetProductDetail(productId int) (*product.Product, error)
-	EncodeProduct(product *product.Product) ([]byte, error)
+	GetProducts() ([]*model.Product, error)
+	GetProductDetail(productId int) (*model.Product, error)
+	EncodeProduct(product *model.Product) ([]byte, error)
+	FetchProductDetailByResult(productId int) *model.Result[model.Product]
 }
