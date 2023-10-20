@@ -10,17 +10,26 @@ import (
 
 // /private/tmp/のproductId.jsonを取得する関数
 func GetfileProduct(productId int) (*product.Product, error) {
+	//channelを定義
+	ch := make(chan *product.Product)
+	defer close(ch)
+
 	//フィル名を変数で定義
 	var fileName = fmt.Sprintf("%d.json", productId)
 	//ローカルのprivate/tmpディレクトリにfilenameと同じファイルが存在するか確認
 	body, err := ioutil.ReadFile("/private/tmp/" + fileName)
 
-	//ファイルが存在すれば、bodyをproduct.Productに変換
+	//ファイルが存在すれば、bodyをproduct.Productに変換してチャネルに格納
 	if err == nil {
-		var product product.Product
+		var product *product.Product
 		err = json.Unmarshal(body, &product)
-		//productを返り値として返す
-		return &product, nil
+		if err != nil {
+			return nil, err
+		}
+		//チャネルに格納
+		ch <- product
+		//チャネルから値を取り出す
+		return <-ch, nil
 	}
 
 	//ファイルが存在しなければ、エラーを返す
