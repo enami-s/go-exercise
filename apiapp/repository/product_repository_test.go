@@ -4,6 +4,24 @@ import (
 	"testing"
 )
 
+func TestResult型でのプロダクト詳細取得メソッドに2のプロダクトIDを付与すると2の結果が取得できる(t *testing.T) {
+	//NewProductRepositoryでProductRepositoryを取得
+	repo := NewProductRepository()
+
+	//GetProductDetailで引数2を指定した時の結果を取得
+	product := repo.FetchProductDetailByResult(2)
+
+	//エラーが発生した場合はエラーを出力
+	if product.Failure != nil {
+		t.Fatal(product.Failure)
+	}
+
+	//結果が2であることを確認
+	if product.Success.ID != 2 {
+		t.Fatal("expected 2 but got", product.Success.ID)
+	}
+}
+
 func Testプロダクト詳細取得メソッドに1のプロダクトIDを付与すると1の結果が取得できる(t *testing.T) {
 	//NewProductRepositoryでProductRepositoryを取得
 	repo := NewProductRepository()
