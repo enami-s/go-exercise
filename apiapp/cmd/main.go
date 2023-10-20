@@ -2,7 +2,7 @@ package main
 
 //repositoryディレクトリをインポート
 import (
-	"apiapp/product"
+	"apiapp/model"
 	"apiapp/repository"
 	"fmt"
 )
@@ -11,14 +11,15 @@ func execute(repo repository.ProductRepository) {
 	// 商品IDを指定
 	productId := 2
 
-	product, err := repo.GetProductDetail(productId)
+	product := repo.FetchProductDetailByResult(productId)
 
-	fmt.Println("## 商品詳細\nID: ", product.ID, ", Title: ", product.Title, "\n")
+	// 商品の情報を表示
+	fmt.Println("## 商品詳細\nID: ", product.Success.ID, ", Title: ", product.Success.Title, "\n")
 	fmt.Println("## encode")
-	encoded, err := repo.EncodeProduct(product)
+	encoded, err := repo.EncodeProduct(product.Success)
 
 	if err != nil {
-		fmt.Println("Error:", err)
+		fmt.Println("Failure:", err)
 		return
 	}
 
@@ -26,9 +27,9 @@ func execute(repo repository.ProductRepository) {
 }
 
 // 商品の一覧を表示する関数
-func showProducts(products []*product.Product, err error) {
+func showProducts(products []*model.Product, err error) {
 	if err != nil {
-		fmt.Println("Error fetching products:", err)
+		fmt.Println("Failure fetching products:", err)
 		return
 	}
 
@@ -44,8 +45,10 @@ func main() {
 
 	repo := repository.NewProductRepository()
 
+	// 商品一覧を取得
 	products, err := repo.GetProducts()
 	showProducts(products, err)
 
+	// 商品詳細を取得
 	execute(repo)
 }
