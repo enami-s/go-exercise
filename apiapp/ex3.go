@@ -1,14 +1,14 @@
 package main
 
 import (
-	"apiapp/product"
+	"apiapp/model"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 )
 
-func GetProductDetail() (*product.Product, error) {
+func GetProductDetail() (*model.Product, error) {
 	resp, err := http.Get("https://dummyjson.com/products/1")
 	if err != nil {
 		return nil, err
@@ -20,7 +20,7 @@ func GetProductDetail() (*product.Product, error) {
 		return nil, err
 	}
 
-	var product product.Product
+	var product model.Product
 	err = json.Unmarshal(body, &product)
 	if err != nil {
 		return nil, err
@@ -32,7 +32,7 @@ func GetProductDetail() (*product.Product, error) {
 func main() {
 	product, err := GetProductDetail()
 	if err != nil {
-		fmt.Println("Error:", err)
+		fmt.Println("Failure:", err)
 		return
 	}
 
